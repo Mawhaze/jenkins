@@ -18,6 +18,9 @@ job('root-dsl-seed') {
           external('jobdsl/*.groovy')
         }
       }
+    }
+  }
+}
 
 // set up root folder strupcture and seed jobs
 folder('ansible') {
