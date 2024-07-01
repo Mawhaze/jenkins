@@ -43,6 +43,9 @@ job('ansible/ansible-dsl-seed') {
           external('ansible/jenkins/jobdsl/*.groovy')
         }
       }
+    }
+  }
+}
 
 // set up docker folder structure 
 // seed jobs should be configured in their respective repositories
