@@ -52,3 +52,8 @@ folder('docker') {
 folder('docker/build') {
   description('Docker build jobs for Jenkins')
 }
+
+// set up project-ender folder structure
+folder('project-ender') {
+  description('Project Ender jobs for Jenkins')
+}
