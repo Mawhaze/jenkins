@@ -43,7 +43,7 @@ job('ansible/ansible-dsl-seed') {
       }
       steps {
         dsl {
-          external('ansible/jenkins/jobdsl/*.groovy')
+          external('jenkins/jobdsl/*.groovy')
         }
       }
     }
