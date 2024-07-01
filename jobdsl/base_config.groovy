@@ -48,6 +48,7 @@ job('ansible/ansible-dsl-seed') {
 // seed jobs should be configured in their respective repositories
 folder('docker') {
   description('Docker jobs for Jenkins')
+}
 
 folder('docker/build') {
   description('Docker build jobs for Jenkins')
