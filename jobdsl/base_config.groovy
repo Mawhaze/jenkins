@@ -15,7 +15,7 @@ job('root-dsl-seed') {
       }
       steps {
         dsl {
-          external('jenkins/jobdsl/*.groovy')
+          external('jobdsl/*.groovy')
         }
       }
 
