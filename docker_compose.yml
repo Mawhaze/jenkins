@@ -1,0 +1,31 @@
+---
+version: "2"
+services:
+  Jenkins:
+    image: mawhaze/jenkins:latest
+    container_name: jenkins_primary
+    ports:
+      - "8080:8080"
+      - "50000:50000"
+    volumes:
+      - /home/mawhaze/jenkins/jenkins_home:/var/jenkins_home
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      - JENKINS_SLAVE_AGENT_PORT=50000
+    restart: unless-stopped
+  Ssh-agent:
+    image: jenkins/ssh-agent:latest
+    container_name: ssh-agent
+    ports:
+      - "2200:22"
+  Jenkins_agent:
+    image: mawhaze/jenkins-agent:latest
+    volumes:
+      - /home/mawhaze/jenkins/jenkins_agent_home:/home/jenkins/agent
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      - JENKINS_URL=http://10.10.10.43:8080
+      - JENKINS_AGENT_NAME=Agent1
+      - JENKINS_SECRET=7909556bebb12c81da1900629bf5faf30f401f04b6e52487d6ba6d5a0bd7992d
+      - JENKINS_AGENT_WORKDIR=/home/jenkins/agent
+    restart: unless-stopped
