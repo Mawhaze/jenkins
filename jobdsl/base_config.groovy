@@ -74,7 +74,7 @@ pipelineJob('docker/build/jenkins_controller') {
             url('https://github.com/mawhaze/jenkins.git')
             credentials('github_access_token')
           }
-          branches('*/master')
+          branches('*/main')
           scriptPath('controller/Jenkinsfile')
         }
       }
