@@ -99,7 +99,7 @@ pipelineJob('docker/build/jenkins_agent') {
             url('https://github.com/mawhaze/jenkins.git')
             credentials('github_access_token')
           }
-          branches('*/master')
+          branches('*/main')
           scriptPath('agent/Jenkinsfile')
         }
       }
