@@ -60,6 +60,55 @@ folder('docker/build') {
   description('Docker build jobs for Jenkins')
 }
 
+// Define the jenkins_controller build job within the docker/build folder
+pipelineJob('docker/build/jenkins_controller') {
+  description('Build the Ansible Docker image from a Jenkinsfile')
+  logRotator {
+    numToKeep(10) //Only keep the last 10
+  }
+  definition {
+    cpsScm {
+      scm {
+        git {
+          remote {
+            url('https://github.com/mawhaze/jenkins.git')
+            credentials('github_access_token')
+          }
+          branches('*/master')
+          scriptPath('controller/Jenkinsfile')
+        }
+      }
+    }
+  }
+  triggers {
+    scm('H 2 * * *') // Build daily between 2am and 3am
+  }
+}
+
+// Define the jenkins_agent build job within the docker/build folder
+pipelineJob('docker/build/jenkins_agent') {
+  description('Build the Ansible Docker image from a Jenkinsfile')
+  logRotator {
+    numToKeep(10) //Only keep the last 10
+  }
+  definition {
+    cpsScm {
+      scm {
+        git {
+          remote {
+            url('https://github.com/mawhaze/jenkins.git')
+            credentials('github_access_token')
+          }
+          branches('*/master')
+          scriptPath('agent/Jenkinsfile')
+        }
+      }
+    }
+  }
+  triggers {
+    scm('H 2 * * *') // Build daily between 2am and 3am
+  }
+
 // set up project-ender folder structure
 folder('project-ender') {
   description('Project Ender jobs for Jenkins')
