@@ -1,0 +1,64 @@
+pipeline {
+    agent any
+
+    environment {
+        // Define the Docker image name
+        IMAGE_NAME = "mawhaze/jenkins-controller"
+    }
+
+    triggers {
+        pollSCM('H 2 * * *')
+    }
+
+    stages {
+        stage('Checkout Code') {
+            steps {
+                checkout scm
+            }
+        }
+        
+        stage('Pre-Build Debug') {
+            steps {
+                script {
+                    // Print Docker version to ensure compatibility
+                    sh "docker --version"
+                }
+            }
+        }
+
+        stage('Build Docker Image') {
+            steps {
+                script {
+                    dir('controller') {
+                        sh "docker build -t ${IMAGE_NAME}:latest ."
+                }
+            }
+        }
+    }
+
+        stage('Docker Login and Push') {
+            steps {
+                script {
+                    // Use withCredentials to securely handle DockerHub login
+                    withCredentials([
+                        string(credentialsId: 'dockerhub_username', variable: 'DOCKERHUB_USERNAME'),
+                        string(credentialsId: 'dockerhub_password', variable: 'DOCKERHUB_PASSWORD')
+                    ]) {
+                        // Login to DockerHub
+                        sh 'echo $DOCKERHUB_PASSWORD | docker login --username $DOCKERHUB_USERNAME --password-stdin'
+                        // Push the Docker image to DockerHub
+                        sh "docker push ${IMAGE_NAME}:latest"
+                        // Logout from DockerHub
+                        sh "docker logout"
+                    }
+                }
+            }
+        }
+    }
+
+    post {
+        always {
+            sh "docker logout"
+        }
+    }
+}
