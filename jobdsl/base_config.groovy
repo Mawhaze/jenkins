@@ -108,6 +108,7 @@ pipelineJob('docker/build/jenkins_agent') {
   triggers {
     scm('H 2 * * *') // Build daily between 2am and 3am
   }
+}
 
 // set up project-ender folder structure
 folder('project-ender') {
