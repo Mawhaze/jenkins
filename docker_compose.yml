@@ -29,3 +29,15 @@ services:
       - JENKINS_SECRET=7909556bebb12c81da1900629bf5faf30f401f04b6e52487d6ba6d5a0bd7992d
       - JENKINS_AGENT_WORKDIR=/home/jenkins/agent
     restart: unless-stopped
+  Jenkins_net_host_agent:
+    image: mawhaze/jenkins-agent:latest
+    network_mode: host
+    volumes:
+      - /home/mawhaze/jenkins/jenkins_nh_agent_home:/home/jenkins/agent
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      - JENKINS_URL=http://10.10.10.43:8080
+      - JENKINS_AGENT_NAME=Net_Host_Agent1
+      - JENKINS_SECRET=e8c007d94761b67d2ea9f099ea09bc66b56c758f4a676c0e8b61649091971986
+      - JENKINS_AGENT_WORKDIR=/home/jenkins/agent
+    restart: unless-stopped

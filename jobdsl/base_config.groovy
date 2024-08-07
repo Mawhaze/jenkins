@@ -142,3 +142,31 @@ job('packer/packer-dsl-seed') {
 folder('project-ender') {
   description('Project Ender jobs for Jenkins')
 }
+
+// set up terraform folder structure
+folder('terraform') {
+  description('Terraform jobs for Jenkins')
+}
+
+job('terraform/terraform-dsl-seed') {
+  description('Seed job for Jenkins Job DSL')
+  logRotator {
+    numToKeep(10)
+  }
+  scm {
+    git {
+      remote {
+        url('https://github.com/Mawhaze/terraform.git')
+        credentials('github_access_token')
+      }
+      triggers{
+        scm('H/15 * * * *')
+      }
+      steps {
+        dsl {
+          external('jenkins/jobdsl/*.groovy')
+        }
+      }
+    }
+  }
+}
